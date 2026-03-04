@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 8 Марта!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Анимированный фон */
+        .background-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.15);
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
+
+        /* Карточка */
+        .card {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 90%;
+            width: 450px;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid #fff;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff6b81;
+            font-size: 2.5rem;
+            margin: 10px 0 20px 0;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #ff8e53;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            white-space: pre-line; /* Сохраняет переносы строк */
+        }
+
+        .flower-box {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            display: inline-block;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .flower-box:hover {
+            transform: scale(1.1) rotate(0deg);
+            animation: none;
+        }
+
+        .btn-gift {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, #ff6b81, #ff8e53);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 20px rgba(255, 107, 129, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-gift:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 107, 129, 0.4);
+        }
+
+        .btn-gift:active {
+            transform: translateY(1px);
+        }
+
+        /* Экран ошибки, если ссылка неверная */
+        .error-screen {
+            display: none;
+            text-align: center;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-shapes" id="shapes"></div>
+
+    <!-- Основной контент -->
+    <div class="card" id="mainCard">
+        <div class="flower-box" onclick="goToGift()">💐</div>
+        <h1 id="nameTitle">Загрузка...</h1>
+        <div class="subtitle">С Международным женским днём! 🌸</div>
+        <div class="message" id="msgText"></div>
+        
+        <button class="btn-gift" onclick="goToGift()">
+            Получить подарок 🎁
+        </button>
+        <p style="font-size: 0.8rem; color: #999; margin-top: 20px;">
+            (Нажми на кнопку или букет)
+        </p>
+    </div>
+
+    <!-- Экран ошибки -->
+    <div class="card error-screen" id="errorCard">
+        <h1>Ой! 🤔</h1>
+        <p>Похоже, ссылка недействительна или имя указано неверно.</p>
+        <p>Попроси организатора проверить ссылку.</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+    <script>
+        // ============================================================
+        // ⚙️ НАСТРОЙКИ: ЗАПОЛНИ ДАННЫЕ ДЛЯ ВСЕХ 21 ДЕВУШКИ ЗДЕСЬ
+        // ============================================================
+        const girlsData = {
+            // Ключ (в ссылке) : { имя, текст, ссылка }
+            "irina": {
+                name: "Ирина",
+                text: "Дорогая Ирина! 🌷\n\nПусть весеннее солнце дарит тепло и радость, а каждый день приносит новые возможности и вдохновение. Ты заслуживаешь всего самого прекрасного!",
+                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
+            },
+            "katya": {
+                name: "Катя",
+                text: "Поздравляем с 8 марта самую ответственную и добрую девушку хаба",
+                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
+            },
+            "anna": {
+                name: "Анна",
+                text: "Дорогая Аня! 🌷\n\nПусть весеннее солнце дарит тепло и радость, а каждый день приносит новые возможности и вдохновение. Ты заслуживаешь всего самого прекрасного!",
+                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
+            },
+            "maria": {
+                name: "Мария",
+                text: "Машенька! 💐\n\nВ этот чудесный день желаю тебе цвести и хорошеть, как весенний цветок! Пусть жизнь будет наполнена любовью, счастьем и красотой!",
+                link: "https://www.ozon.ru/" // Ссылка на сертификат Маши
+            },
+            "elena": {
+                name: "Елена",
+                text: "Леночка! 🌸\n\nС 8 Марта! Пусть весна принесёт обновление, радость и исполнение самых заветных желаний. Ты прекрасна!",
+                link: "https://www.wildberries.ru/" 
+            },
+            "olga": {
+                name: "Ольга",
+                text: "Оля! 🌺\n\nПоздравляю с праздником весны! Желаю быть такой же цветущей, жизнерадостной и прекрасной. Пусть каждый день дарит улыбки!",
+                link: "https://www.zoloto585.ru/" 
+            },
+            "tatiana": {
+                name: "Татьяна",
+                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                link: "https://www.iledebeaute.ru/" 
+            },
+            // ... ДОБАВЬ ОСТАЛЬНЫХ 16 ДЕВУШЕК ПО АНАЛОГИИ ...
+            // "svetlana": { name: "Светлана", text: "...", link: "..." },
+            // "natasha": { name: "Наталья", text: "...", link: "..." },
+            // и т.д.
+            
+            // Пример заглушки
+            "default": {
+                name: "Дорогая",
+                text: "С 8 Марта! 🌷💐🌸\n\nЖелаем тебе весеннего настроения, красоты, здоровья и счастья! Пусть каждый день будет наполнен радостью и любовью!",
+                link: "https://google.com" 
+            }
+        };
+        // ============================================================
+
+        // 1. Получаем параметр из ссылки (например, ?user=anna)
+        const urlParams = new URLSearchParams(window.location.search);
+        const userKey = urlParams.get('user'); // Ищем параметр 'user'
+
+        const mainCard = document.getElementById('mainCard');
+        const errorCard = document.getElementById('errorCard');
+        const nameTitle = document.getElementById('nameTitle');
+        const msgText = document.getElementById('msgText');
+
+        let currentLink = "";
+
+        // 2. Логика отображения
+        if (userKey && girlsData[userKey]) {
+            // Если пользователь найден в базе
+            const data = girlsData[userKey];
+            
+            nameTitle.innerText = data.name + "!";
+            msgText.innerText = data.text;
+            currentLink = data.link;
+
+            // Показываем карточку
+            mainCard.classList.add('visible');
+            
+            // Запускаем салют
+            setTimeout(fireConfetti, 500);
+        } else {
+            // Если пользователь не найден (ошибка в ссылке)
+            mainCard.style.display = 'none';
+            errorCard.style.display = 'block';
+            errorCard.classList.add('visible');
+        }
+
+        // 3. Функция перехода к подарку
+        function goToGift() {
+            if (currentLink) {
+                window.location.href = currentLink;
+            } else {
+                alert("Ссылка на подарок не найдена :(");
+            }
+        }
+
+        // 4. Эффект конфетти (весенние цвета)
+        function fireConfetti() {
+            var duration = 3000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#ff6b81', '#ff8e53', '#ffd700', '#ff69b4', '#ffb6c1']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#ff6b81', '#ff8e53', '#ffd700', '#ff69b4', '#ffb6c1']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+
+        // 5. Генерация фона
+        const shapesContainer = document.getElementById('shapes');
+        for(let i=0; i<15; i++) {
+            const div = document.createElement('div');
+            div.classList.add('shape');
+            const size = Math.random() * 60 + 20;
+            div.style.width = `${size}px`;
+            div.style.height = `${size}px`;
+            div.style.left = `${Math.random() * 100}%`;
+            div.style.animationDuration = `${Math.random() * 10 + 15}s`;
+            div.style.animationDelay = `${Math.random() * 5}s`;
+            shapesContainer.appendChild(div);
+        }
+    </script>
+</body>
+</html>
