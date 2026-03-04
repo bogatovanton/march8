@@ -2,20 +2,30 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ff6b81">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>С 8 Марта!</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            min-height: 100dvh; /* Для мобильных браузеров */
             display: flex;
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #ffeef8 0%, #e8f4f8 100%);
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
 
         /* Анимированный фон */
@@ -35,6 +45,7 @@
             border-radius: 50%;
             background: rgba(255, 105, 180, 0.15);
             animation: float 20s infinite linear;
+            will-change: transform; /* Оптимизация для мобильных */
         }
 
         @keyframes float {
@@ -48,16 +59,17 @@
             position: relative;
             z-index: 10;
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px 30px;
+            padding: 30px 20px;
             border-radius: 25px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.15);
             text-align: center;
-            max-width: 90%;
-            width: 450px;
+            width: 90%;
+            max-width: 450px;
             transform: translateY(30px);
             opacity: 0;
             transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 2px solid #fff;
+            margin: 15px;
         }
 
         .card.visible {
@@ -68,34 +80,37 @@
         h1 {
             font-family: 'Pacifico', cursive;
             color: #ff6b81;
-            font-size: 2.5rem;
-            margin: 10px 0 20px 0;
+            font-size: 2.2rem;
+            margin: 10px 0 15px 0;
             line-height: 1.2;
+            word-wrap: break-word;
         }
 
         .subtitle {
             color: #ff8e53;
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             font-weight: 700;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .message {
             color: #444;
-            font-size: 1.1rem;
+            font-size: 1rem;
             line-height: 1.6;
-            margin-bottom: 30px;
-            white-space: pre-line; /* Сохраняет переносы строк */
+            margin-bottom: 25px;
+            white-space: pre-line;
+            word-wrap: break-word;
         }
 
         .flower-box {
-            font-size: 5rem;
+            font-size: 4rem;
             margin-bottom: 10px;
             display: inline-block;
             filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
             cursor: pointer;
             transition: transform 0.3s;
             animation: sway 3s ease-in-out infinite;
+            -webkit-animation: sway 3s ease-in-out infinite;
         }
         
         @keyframes sway {
@@ -103,7 +118,7 @@
             50% { transform: rotate(5deg); }
         }
 
-        .flower-box:hover {
+        .flower-box:hover, .flower-box:active {
             transform: scale(1.1) rotate(0deg);
             animation: none;
         }
@@ -111,33 +126,192 @@
         .btn-gift {
             display: inline-block;
             margin-top: 10px;
-            padding: 15px 40px;
+            padding: 15px 35px;
+            min-height: 50px; /* Удобно для пальца */
+            min-width: 200px;
             background: linear-gradient(45deg, #ff6b81, #ff8e53);
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             box-shadow: 0 10px 20px rgba(255, 107, 129, 0.3);
             transition: transform 0.2s, box-shadow 0.2s;
             border: none;
             cursor: pointer;
+            -webkit-appearance: none;
         }
 
-        .btn-gift:hover {
+        .btn-gift:hover, .btn-gift:active {
             transform: translateY(-3px);
             box-shadow: 0 15px 25px rgba(255, 107, 129, 0.4);
         }
 
-        .btn-gift:active {
-            transform: translateY(1px);
+        .hint-text {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 15px;
+            line-height: 1.4;
         }
 
-        /* Экран ошибки, если ссылка неверная */
+        /* Экран ошибки */
         .error-screen {
             display: none;
             text-align: center;
             color: #555;
+        }
+
+        /* ========== АДАПТАЦИЯ ПОД РАЗНЫЕ ЭКРАНЫ ========== */
+        
+        /* Маленькие телефоны (до 375px) */
+        @media (max-width: 375px) {
+            .card {
+                padding: 25px 15px;
+                width: 95%;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .message {
+                font-size: 0.9rem;
+            }
+            
+            .flower-box {
+                font-size: 3.5rem;
+            }
+            
+            .btn-gift {
+                padding: 14px 25px;
+                min-width: 180px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* Средние телефоны (375px - 425px) */
+        @media (min-width: 376px) and (max-width: 425px) {
+            .card {
+                padding: 28px 18px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .flower-box {
+                font-size: 3.8rem;
+            }
+        }
+
+        /* Большие телефоны и планшеты (426px - 768px) */
+        @media (min-width: 426px) and (max-width: 768px) {
+            .card {
+                padding: 35px 25px;
+            }
+            
+            h1 {
+                font-size: 2.3rem;
+            }
+            
+            .flower-box {
+                font-size: 4.2rem;
+            }
+        }
+
+        /* Планшеты в портретной ориентации */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .card {
+                margin: 20px auto;
+            }
+        }
+
+        /* Планшеты в ландшафтной ориентации */
+        @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+            .card {
+                max-width: 500px;
+                padding: 40px 30px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Очень маленькие экраны (до 320px) */
+        @media (max-width: 320px) {
+            .card {
+                padding: 20px 12px;
+                width: 98%;
+                margin: 8px;
+            }
+            
+            h1 {
+                font-size: 1.6rem;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .message {
+                font-size: 0.85rem;
+            }
+            
+            .flower-box {
+                font-size: 3rem;
+            }
+            
+            .btn-gift {
+                padding: 12px 20px;
+                min-width: 160px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Уменьшаем анимации для устройств с reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            .shape, .flower-box {
+                animation: none;
+            }
+            
+            .card {
+                transition: none;
+            }
+        }
+
+        /* Тёмная тема (опционально) */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: linear-gradient(135deg, #2d1f2e 0%, #1f2d3d 100%);
+            }
+            
+            .card {
+                background: rgba(40, 40, 50, 0.95);
+                color: #eee;
+            }
+            
+            .message {
+                color: #ddd;
+            }
+        }
+
+        /* Safe areas для iPhone X и новее */
+        @supports (padding: max(0px)) {
+            body {
+                padding-left: max(0px, env(safe-area-inset-left));
+                padding-right: max(0px, env(safe-area-inset-right));
+            }
+            
+            .card {
+                margin-left: max(15px, env(safe-area-inset-left));
+                margin-right: max(15px, env(safe-area-inset-right));
+            }
         }
     </style>
 </head>
@@ -147,16 +321,16 @@
 
     <!-- Основной контент -->
     <div class="card" id="mainCard">
-        <div class="flower-box" onclick="goToGift()">💐</div>
+        <div class="flower-box" onclick="goToGift()" role="button" tabindex="0" aria-label="Получить подарок">💐</div>
         <h1 id="nameTitle">Загрузка...</h1>
         <div class="subtitle">С Международным женским днём! 🌸</div>
         <div class="message" id="msgText"></div>
         
-        <button class="btn-gift" onclick="goToGift()">
-            Получить подарок 🎁
+        <button class="btn-gift" onclick="goToGift()" type="button">
+            🎁 Получить подарок
         </button>
-        <p style="font-size: 0.8rem; color: #999; margin-top: 20px;">
-            (Нажми на кнопку или букет)
+        <p class="hint-text">
+            Нажми на кнопку или букет
         </p>
     </div>
 
@@ -167,7 +341,6 @@
         <p>Попроси организатора проверить ссылку.</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.css"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
@@ -175,59 +348,43 @@
         // ⚙️ НАСТРОЙКИ: ЗАПОЛНИ ДАННЫЕ ДЛЯ ВСЕХ 21 ДЕВУШКИ ЗДЕСЬ
         // ============================================================
         const girlsData = {
-            // Ключ (в ссылке) : { имя, текст, ссылка }
-            "irina": {
-                name: "Ирина",
-                text: "Дорогая Ирина! 🌷\n\nПусть весеннее солнце дарит тепло и радость, а каждый день приносит новые возможности и вдохновение. Ты заслуживаешь всего самого прекрасного!",
-                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
-            },
-            "katya": {
-                name: "Катя",
-                text: "Поздравляем с 8 марта самую ответственную и добрую девушку хаба",
-                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
-            },
             "anna": {
                 name: "Анна",
                 text: "Дорогая Аня! 🌷\n\nПусть весеннее солнце дарит тепло и радость, а каждый день приносит новые возможности и вдохновение. Ты заслуживаешь всего самого прекрасного!",
-                link: "https://www.lamoda.ru/" // Ссылка на сертификат Анны
+                link: "https://www.lamoda.ru/"
             },
             "maria": {
                 name: "Мария",
                 text: "Машенька! 💐\n\nВ этот чудесный день желаю тебе цвести и хорошеть, как весенний цветок! Пусть жизнь будет наполнена любовью, счастьем и красотой!",
-                link: "https://www.ozon.ru/" // Ссылка на сертификат Маши
+                link: "https://www.ozon.ru/"
             },
             "elena": {
                 name: "Елена",
                 text: "Леночка! 🌸\n\nС 8 Марта! Пусть весна принесёт обновление, радость и исполнение самых заветных желаний. Ты прекрасна!",
-                link: "https://www.wildberries.ru/" 
+                link: "https://www.wildberries.ru/"
             },
             "olga": {
                 name: "Ольга",
                 text: "Оля! 🌺\n\nПоздравляю с праздником весны! Желаю быть такой же цветущей, жизнерадостной и прекрасной. Пусть каждый день дарит улыбки!",
-                link: "https://www.zoloto585.ru/" 
+                link: "https://www.zoloto585.ru/"
             },
             "tatiana": {
                 name: "Татьяна",
                 text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
-                link: "https://www.iledebeaute.ru/" 
+                link: "https://www.iledebeaute.ru/"
             },
             // ... ДОБАВЬ ОСТАЛЬНЫХ 16 ДЕВУШЕК ПО АНАЛОГИИ ...
-            // "svetlana": { name: "Светлана", text: "...", link: "..." },
-            // "natasha": { name: "Наталья", text: "...", link: "..." },
-            // и т.д.
             
-            // Пример заглушки
             "default": {
                 name: "Дорогая",
                 text: "С 8 Марта! 🌷💐🌸\n\nЖелаем тебе весеннего настроения, красоты, здоровья и счастья! Пусть каждый день будет наполнен радостью и любовью!",
-                link: "https://google.com" 
+                link: "https://google.com"
             }
         };
         // ============================================================
 
-        // 1. Получаем параметр из ссылки (например, ?user=anna)
         const urlParams = new URLSearchParams(window.location.search);
-        const userKey = urlParams.get('user'); // Ищем параметр 'user'
+        const userKey = urlParams.get('user');
 
         const mainCard = document.getElementById('mainCard');
         const errorCard = document.getElementById('errorCard');
@@ -236,55 +393,60 @@
 
         let currentLink = "";
 
-        // 2. Логика отображения
+        // Вибрация при нажатии (для Android)
+        function vibrate() {
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
         if (userKey && girlsData[userKey]) {
-            // Если пользователь найден в базе
             const data = girlsData[userKey];
             
             nameTitle.innerText = data.name + "!";
             msgText.innerText = data.text;
             currentLink = data.link;
 
-            // Показываем карточку
             mainCard.classList.add('visible');
-            
-            // Запускаем салют
             setTimeout(fireConfetti, 500);
         } else {
-            // Если пользователь не найден (ошибка в ссылке)
             mainCard.style.display = 'none';
             errorCard.style.display = 'block';
             errorCard.classList.add('visible');
         }
 
-        // 3. Функция перехода к подарку
         function goToGift() {
             if (currentLink) {
+                vibrate();
                 window.location.href = currentLink;
             } else {
                 alert("Ссылка на подарок не найдена :(");
             }
         }
 
-        // 4. Эффект конфетти (весенние цвета)
+        // Оптимизированная анимация конфетти
         function fireConfetti() {
-            var duration = 3000;
-            var end = Date.now() + duration;
+            const duration = 2500;
+            const end = Date.now() + duration;
+
+            const colors = ['#ff6b81', '#ff8e53', '#ffd700', '#ff69b4', '#ffb6c1'];
 
             (function frame() {
                 confetti({
-                    particleCount: 5,
+                    particleCount: 3,
                     angle: 60,
                     spread: 55,
                     origin: { x: 0 },
-                    colors: ['#ff6b81', '#ff8e53', '#ffd700', '#ff69b4', '#ffb6c1']
+                    colors: colors,
+                    disableForReducedMotion: true
                 });
                 confetti({
-                    particleCount: 5,
+                    particleCount: 3,
                     angle: 120,
                     spread: 55,
                     origin: { x: 1 },
-                    colors: ['#ff6b81', '#ff8e53', '#ffd700', '#ff69b4', '#ffb6c1']
+                    colors: colors,
+                    disableForReducedMotion: true
                 });
 
                 if (Date.now() < end) {
@@ -293,9 +455,12 @@
             }());
         }
 
-        // 5. Генерация фона
+        // Генерация фона (меньше элементов для мобильных)
         const shapesContainer = document.getElementById('shapes');
-        for(let i=0; i<15; i++) {
+        const isMobile = window.innerWidth < 768;
+        const shapeCount = isMobile ? 8 : 15;
+
+        for(let i = 0; i < shapeCount; i++) {
             const div = document.createElement('div');
             div.classList.add('shape');
             const size = Math.random() * 60 + 20;
@@ -306,6 +471,13 @@
             div.style.animationDelay = `${Math.random() * 5}s`;
             shapesContainer.appendChild(div);
         }
+
+        // Добавляем поддержку Enter для букета
+        document.querySelector('.flower-box').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                goToGift();
+            }
+        });
     </script>
 </body>
 </html>
