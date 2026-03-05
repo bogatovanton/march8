@@ -18,7 +18,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            min-height: 100dvh; /* Для мобильных браузеров */
+            min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,7 +28,6 @@
             touch-action: manipulation;
         }
 
-        /* Анимированный фон */
         .background-shapes {
             position: absolute;
             top: 0;
@@ -45,7 +44,7 @@
             border-radius: 50%;
             background: rgba(255, 105, 180, 0.15);
             animation: float 20s infinite linear;
-            will-change: transform; /* Оптимизация для мобильных */
+            will-change: transform;
         }
 
         @keyframes float {
@@ -54,7 +53,6 @@
             100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
         }
 
-        /* Карточка */
         .card {
             position: relative;
             z-index: 10;
@@ -107,8 +105,6 @@
             margin-bottom: 10px;
             display: inline-block;
             filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
-            cursor: pointer;
-            transition: transform 0.3s;
             animation: sway 3s ease-in-out infinite;
             -webkit-animation: sway 3s ease-in-out infinite;
         }
@@ -118,33 +114,34 @@
             50% { transform: rotate(5deg); }
         }
 
-        .flower-box:hover, .flower-box:active {
-            transform: scale(1.1) rotate(0deg);
-            animation: none;
+        /* Блок с информацией о SMS */
+        .sms-info {
+            background: linear-gradient(135deg, #fff5f7 0%, #f0f8ff 100%);
+            border: 2px dashed #ff6b81;
+            border-radius: 15px;
+            padding: 20px 15px;
+            margin-top: 20px;
         }
 
-        .btn-gift {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 15px 35px;
-            min-height: 50px; /* Удобно для пальца */
-            min-width: 200px;
-            background: linear-gradient(45deg, #ff6b81, #ff8e53);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
+        .sms-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .sms-text {
+            color: #555;
             font-size: 1rem;
-            box-shadow: 0 10px 20px rgba(255, 107, 129, 0.3);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: none;
-            cursor: pointer;
-            -webkit-appearance: none;
+            line-height: 1.5;
+            font-weight: 600;
         }
 
-        .btn-gift:hover, .btn-gift:active {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(255, 107, 129, 0.4);
+        .sms-time {
+            color: #ff6b81;
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: block;
+            margin-top: 8px;
         }
 
         .hint-text {
@@ -154,16 +151,14 @@
             line-height: 1.4;
         }
 
-        /* Экран ошибки */
         .error-screen {
             display: none;
             text-align: center;
             color: #555;
         }
 
-        /* ========== АДАПТАЦИЯ ПОД РАЗНЫЕ ЭКРАНЫ ========== */
+        /* ========== АДАПТАЦИЯ ========== */
         
-        /* Маленькие телефоны (до 375px) */
         @media (max-width: 375px) {
             .card {
                 padding: 25px 15px;
@@ -186,15 +181,20 @@
             .flower-box {
                 font-size: 3.5rem;
             }
-            
-            .btn-gift {
-                padding: 14px 25px;
-                min-width: 180px;
-                font-size: 0.95rem;
+
+            .sms-info {
+                padding: 15px 12px;
+            }
+
+            .sms-text {
+                font-size: 0.9rem;
+            }
+
+            .sms-time {
+                font-size: 1.2rem;
             }
         }
 
-        /* Средние телефоны (375px - 425px) */
         @media (min-width: 376px) and (max-width: 425px) {
             .card {
                 padding: 28px 18px;
@@ -209,7 +209,6 @@
             }
         }
 
-        /* Большие телефоны и планшеты (426px - 768px) */
         @media (min-width: 426px) and (max-width: 768px) {
             .card {
                 padding: 35px 25px;
@@ -224,26 +223,6 @@
             }
         }
 
-        /* Планшеты в портретной ориентации */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .card {
-                margin: 20px auto;
-            }
-        }
-
-        /* Планшеты в ландшафтной ориентации */
-        @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
-            .card {
-                max-width: 500px;
-                padding: 40px 30px;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-        }
-
-        /* Очень маленькие экраны (до 320px) */
         @media (max-width: 320px) {
             .card {
                 padding: 20px 12px;
@@ -266,15 +245,20 @@
             .flower-box {
                 font-size: 3rem;
             }
-            
-            .btn-gift {
-                padding: 12px 20px;
-                min-width: 160px;
-                font-size: 0.9rem;
+
+            .sms-info {
+                padding: 12px 10px;
+            }
+
+            .sms-text {
+                font-size: 0.85rem;
+            }
+
+            .sms-time {
+                font-size: 1.1rem;
             }
         }
 
-        /* Уменьшаем анимации для устройств с reduced-motion */
         @media (prefers-reduced-motion: reduce) {
             .shape, .flower-box {
                 animation: none;
@@ -285,7 +269,6 @@
             }
         }
 
-        /* Тёмная тема (опционально) */
         @media (prefers-color-scheme: dark) {
             body {
                 background: linear-gradient(135deg, #2d1f2e 0%, #1f2d3d 100%);
@@ -295,13 +278,21 @@
                 background: rgba(40, 40, 50, 0.95);
                 color: #eee;
             }
+
+            .sms-info {
+                background: linear-gradient(135deg, #3d2f3e 0%, #2f3d4d 100%);
+                border-color: #ff8ea3;
+            }
             
             .message {
                 color: #ddd;
             }
+
+            .sms-text {
+                color: #ccc;
+            }
         }
 
-        /* Safe areas для iPhone X и новее */
         @supports (padding: max(0px)) {
             body {
                 padding-left: max(0px, env(safe-area-inset-left));
@@ -321,16 +312,22 @@
 
     <!-- Основной контент -->
     <div class="card" id="mainCard">
-        <div class="flower-box" onclick="goToGift()" role="button" tabindex="0" aria-label="Получить подарок">💐</div>
+        <div class="flower-box">💐</div>
         <h1 id="nameTitle">Загрузка...</h1>
         <div class="subtitle">С Международным женским днём! 🌸</div>
         <div class="message" id="msgText"></div>
         
-        <button class="btn-gift" onclick="goToGift()" type="button">
-            🎁 Получить подарок
-        </button>
+        <!-- Блок с информацией о SMS -->
+        <div class="sms-info">
+            <span class="sms-icon">📱</span>
+            <div class="sms-text">
+                Ваш подарок придёт вам в SMS
+                <span class="sms-time">⏰ в 15:00</span>
+            </div>
+        </div>
+
         <p class="hint-text">
-            Нажми на кнопку или букет
+            Не забудьте проверить телефон! 💕
         </p>
     </div>
 
@@ -344,6 +341,9 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 
     <script>
+        // ============================================================
+        // ⚙️ НАСТРОЙКИ: ЗАПОЛНИ ДАННЫЕ ДЛЯ ВСЕХ 21 ДЕВУШКИ ЗДЕСЬ
+        // ============================================================
         const girlsData = {
             "katya_podobina": {
                 name: "Катя",
@@ -351,58 +351,58 @@
                 link: "https://www.lamoda.ru/"
             },
             "alena_palamarchuk": {
-                name: "Мария",
-                text: "Машенька! 💐\n\nВ этот чудесный день желаю тебе цвести и хорошеть, как весенний цветок! Пусть жизнь будет наполнена любовью, счастьем и красотой!",
+                name: "Алена",
+                text: "Дорогая Алена! 💐\n\nПоздравляем тебя с 8 Марта и желаем, чтобы твоя активность и сила всегда вели нас к новым вершинам! Пусть работа приносит только удовольствие, а жизнь дарит столько же заботы и тепла, сколько ты отдаешь нашему коллективу.",
                 link: "https://www.ozon.ru/"
             },
             "valentina": {
-                name: "Елена",
-                text: "Леночка! 🌸\n\nС 8 Марта! Пусть весна принесёт обновление, радость и исполнение самых заветных желаний. Ты прекрасна!",
+                name: "Валентина",
+                text: "Дорогая Валентина! 🌸\n\nПоздравляем с 8 Марта! Спасибо за то, что вносишь гармонию в наше расписание и сладость в наши будни вкусным печеньем. Пусть твоя жизнь будет четко спланирована для счастья, а каждый день будет таким же уютным и сладким, как наши чайные паузы!",
                 link: "https://www.wildberries.ru/"
             },
             "julia": {
-                name: "Ольга",
-                text: "Оля! 🌺\n\nПоздравляю с праздником весны! Желаю быть такой же цветущей, жизнерадостной и прекрасной. Пусть каждый день дарит улыбки!",
+                name: "Юлия",
+                text: "Дорогая Юлия! 🌺\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
                 link: "https://www.zoloto585.ru/"
             },
             "aleksa": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Александра",
+                text: "Дорогая Александра! 🌹\n\nПоздравляем с 8 Марта! Пусть твой каждый день складывается в красивый фильм без дублей. Желаем всегда ловить в объектив только счастливые моменты и быть главной героиней своей судьбы!",
                 link: "https://www.iledebeaute.ru/"
             },
             "tatiana_voronkova": {
                 name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                text: "Дорогая Татьяна! 🌹\n\nПоздравляем с 8 Марта! Пусть счастье умножается в геометрической прогрессии, а любые жизненные задачи решаются легко и изящно. Желаем, чтобы вероятность радости стремилась к единице, а любовь была единственно верным решением!",
                 link: "https://www.iledebeaute.ru/"
             },
             "irina_denisova": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Ирина",
+                text: "Дорогая Ирина! 🌹\n\nПоздравляем с 8 Марта! Пусть грамматика жизни будет без ошибок, а словарный запас пополняется только словами love, happiness и success. Желаем, чтобы каждый день звучал красиво, а работа приносила вдохновение и радость!",
                 link: "https://www.iledebeaute.ru/"
             },
             "maria": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Мария",
+                text: "Мария! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
                 link: "https://www.iledebeaute.ru/"
             },
             "evgenya": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Евгения",
+                text: "Евгения! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
                 link: "https://www.iledebeaute.ru/"
             },
             "tsareva": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Юлия",
+                text: "Дорогая Юлия! 🌹\n\nПоздравляем с 8 Марта! Пусть палитра твоих дней будет самой сочной, а жизнь рисует только счастливые сценарии. Желаем вечного вдохновения и чтобы каждый твой день был похож на шедевр!",
                 link: "https://www.iledebeaute.ru/"
             },
             "irina_sorokina": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Ирина",
+                text: "Ирина! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
                 link: "https://www.iledebeaute.ru/"
             },
             "alena_zakutaeva": {
-                name: "Татьяна",
-                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                name: "Алена",
+                text: "Дорогая Алена! 🌹\n\nПоздравляем с 8 Марта! Пусть ваша жизнь звучит как красивая песня, где каждое слово наполнено смыслом, а в нотной грамоте судьбы не будет фальшивых нот. Желаем всегда петь в унисон со своим сердцем и собирать громкие аплодисменты счастья!",
                 link: "https://www.iledebeaute.ru/"
             },
             "elizaveta_kondrashova": {
@@ -450,6 +450,11 @@
                 text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
                 link: "https://www.iledebeaute.ru/"
             },
+            "anna_zacepina": {
+                name: "Татьяна",
+                text: "Танюша! 🌹\n\nС Международным женским днём! Пусть в душе всегда цветёт весна, а рядом будут любящие и заботливые люди!",
+                link: "https://www.iledebeaute.ru/"
+            },
             
             "default": {
                 name: "Дорогая",
@@ -457,6 +462,7 @@
                 link: "https://google.com"
             }
         };
+        // ============================================================
 
         const urlParams = new URLSearchParams(window.location.search);
         const userKey = urlParams.get('user');
@@ -466,21 +472,11 @@
         const nameTitle = document.getElementById('nameTitle');
         const msgText = document.getElementById('msgText');
 
-        let currentLink = "";
-
-        // Вибрация при нажатии (для Android)
-        function vibrate() {
-            if (navigator.vibrate) {
-                navigator.vibrate(50);
-            }
-        }
-
         if (userKey && girlsData[userKey]) {
             const data = girlsData[userKey];
             
             nameTitle.innerText = data.name + "!";
             msgText.innerText = data.text;
-            currentLink = data.link;
 
             mainCard.classList.add('visible');
             setTimeout(fireConfetti, 500);
@@ -490,16 +486,6 @@
             errorCard.classList.add('visible');
         }
 
-        function goToGift() {
-            if (currentLink) {
-                vibrate();
-                window.location.href = currentLink;
-            } else {
-                alert("Ссылка на подарок не найдена :(");
-            }
-        }
-
-        // Оптимизированная анимация конфетти
         function fireConfetti() {
             const duration = 2500;
             const end = Date.now() + duration;
@@ -546,13 +532,6 @@
             div.style.animationDelay = `${Math.random() * 5}s`;
             shapesContainer.appendChild(div);
         }
-
-        // Добавляем поддержку Enter для букета
-        document.querySelector('.flower-box').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                goToGift();
-            }
-        });
     </script>
 </body>
 </html>
